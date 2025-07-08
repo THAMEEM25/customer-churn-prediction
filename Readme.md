@@ -1,7 +1,17 @@
-# 📊 Customer Churn Prediction (Telecom)
+![Status](https://img.shields.io/badge/status-completed-brightgreen)
+![Made with](https://img.shields.io/badge/Made%20with-Python-blue)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
-This project is a machine learning-based system that predicts whether a telecom customer is likely to **churn (leave)** or **stay**, based on their usage data. It includes a clean interactive web interface using Streamlit and well-organized Python scripts for training and predicting.
+This project is a machine learning-based system that predicts whether a telecom customer is likely to **churn (leave)** or **stay**, based on their usage data. It includes a clean interactive web interface using Streamlit and well-organized Python scripts for training and prediction.
 
+---
+
+## 🖥️ Demo
+
+> 📸 Local App Preview  
+> (No online deployment — built for internship portfolio)
+
+![App Screenshot]("C:\Users\THAMEEM ANSAR\OneDrive\Pictures\Screenshots\Screenshot 2025-07-08 122344.png")
 ---
 
 ## 🚀 Features
