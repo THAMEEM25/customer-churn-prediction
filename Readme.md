@@ -1,3 +1,6 @@
+# 📊 Customer Churn Prediction (Telecom)
+
+
 ![Status](https://img.shields.io/badge/status-completed-brightgreen)
 ![Made with](https://img.shields.io/badge/Made%20with-Python-blue)
 ![License](https://img.shields.io/badge/license-MIT-blue)
@@ -11,7 +14,7 @@ This project is a machine learning-based system that predicts whether a telecom 
 > 📸 Local App Preview  
 > (No online deployment — built for internship portfolio)
 
-![App Screenshot]("C:\Users\THAMEEM ANSAR\OneDrive\Pictures\Screenshots\Screenshot 2025-07-08 122344.png")
+![App Screenshot](dashboard/demo_screenshot.png)
 ---
 
 ## 🚀 Features
