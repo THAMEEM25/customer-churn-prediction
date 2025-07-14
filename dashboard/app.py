@@ -1,83 +1,88 @@
 import streamlit as st
 import pickle
+import numpy as np
 
 # Load trained model
 with open("models/churn_model.pkl", "rb") as f:
     model = pickle.load(f)
 
-# 🌌 Custom page styling
-st.set_page_config(page_title="Churn Predictor", layout="wide")
-st.markdown(
-    """
+# Set page config
+st.set_page_config(page_title="Customer Churn Predictor", layout="centered")
+
+# CSS for dark techy background and glowing title
+st.markdown("""
     <style>
     body {
-        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        background-color: #0f1117;
         color: white;
     }
     .title-box {
-        background-color: rgba(255, 255, 255, 0.05);
-        padding: 1.5rem;
+        background-color: #222;
+        padding: 20px;
         border-radius: 15px;
-        box-shadow: 0 0 25px #00ffe0;
         text-align: center;
+        box-shadow: 0 0 20px #00f0ff;
         margin-bottom: 30px;
     }
-    .predict-box {
-        background-color: #101010;
-        padding: 1.2rem;
-        border-radius: 12px;
-        box-shadow: 0 0 15px #00ffe0;
-        text-align: center;
-        font-size: 1.3rem;
+    .title-box h1 {
+        color: #00f0ff;
+        font-size: 40px;
+        font-family: monospace;
+        margin: 0;
     }
     </style>
-    """,
-    unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
 
-# 🔷 Glowing Title
+# Glowing title
 st.markdown('<div class="title-box"><h1>Customer Churn Prediction</h1></div>', unsafe_allow_html=True)
 
-# 🔢 Input Form
-st.subheader("Enter Customer Details:")
+# Input form
+st.subheader("📋 Enter Customer Details")
 
-col1, col2 = st.columns(2)
+TotalCharges = st.slider("Total Charges (₹)", min_value=0.0, max_value=10000.0, value=500.0)
+MonthlyCharges = st.slider("Monthly Charges (₹)", min_value=0.0, max_value=200.0, value=70.0)
+tenure = st.slider("Tenure (months)", min_value=0, max_value=72, value=12)
 
-with col1:
-    tenure = st.slider("Tenure (in months)", 0, 72, 24)
-    monthly_charges = st.slider("Monthly Charges", 18, 120, 65)
-    total_charges = st.slider("Total Charges", 0, 9000, 2500)
-    internet_service = st.selectbox("Internet Service", ["DSL", "Fiber optic"])
-    payment_method = st.selectbox("Payment Method", [
-        "Electronic check", "Mailed check", "Bank transfer (automatic)", "Credit card (automatic)"
-    ])
-    contract_type = st.selectbox("Contract Type", ["Month-to-month", "One year", "Two year"])
+InternetService = st.selectbox("Internet Service Type", ["Fiber optic", "Other"])
+InternetService_Fiber_optic = 1 if InternetService == "Fiber optic" else 0
 
-with col2:
-    gender = st.selectbox("Gender", ["Male", "Female"])
-    paperless_billing = st.radio("Paperless Billing", ["Yes", "No"])
-    online_security = st.radio("Online Security", ["Yes", "No"])
-    partner = st.radio("Has a Partner", ["Yes", "No"])
-    tech_support = st.radio("Tech Support Enabled", ["Yes", "No"])
-    senior_citizen = st.radio("Senior Citizen", ["Yes", "No"])
+PaymentMethod = st.selectbox("Payment Method", ["Electronic check", "Other"])
+PaymentMethod_Electronic_check = 1 if PaymentMethod == "Electronic check" else 0
 
-# ✅ Prediction logic
+Contract = st.selectbox("Contract Type", ["Two year", "Other"])
+Contract_Two_year = 1 if Contract == "Two year" else 0
+
+gender = st.selectbox("Gender", ["Male", "Female"])
+gender_Male = 1 if gender == "Male" else 0
+
+PaperlessBilling = st.selectbox("Paperless Billing", ["Yes", "No"])
+PaperlessBilling_Yes = 1 if PaperlessBilling == "Yes" else 0
+
+OnlineSecurity = st.selectbox("Online Security", ["Yes", "No"])
+OnlineSecurity_Yes = 1 if OnlineSecurity == "Yes" else 0
+
+Partner = st.selectbox("Has Partner?", ["Yes", "No"])
+Partner_Yes = 1 if Partner == "Yes" else 0
+
+TechSupport = st.selectbox("Tech Support", ["Yes", "No"])
+TechSupport_Yes = 1 if TechSupport == "Yes" else 0
+
+SeniorCitizen = st.selectbox("Senior Citizen?", ["Yes", "No"])
+SeniorCitizen = 1 if SeniorCitizen == "Yes" else 0
+
+# Predict button
 if st.button("Predict Churn"):
-    features = [
-        total_charges,
-        monthly_charges,
-        tenure,
-        1 if internet_service == "Fiber optic" else 0,
-        1 if payment_method == "Electronic check" else 0,
-        1 if contract_type == "Two year" else 0,
-        1 if gender == "Male" else 0,
-        1 if paperless_billing == "Yes" else 0,
-        1 if online_security == "Yes" else 0,
-        1 if partner == "Yes" else 0,
-        1 if tech_support == "Yes" else 0,
-        1 if senior_citizen == "Yes" else 0,
-    ]
-    prediction = model.predict([features])[0]
+    input_data = np.array([
+        TotalCharges, MonthlyCharges, tenure,
+        InternetService_Fiber_optic, PaymentMethod_Electronic_check,
+        Contract_Two_year, gender_Male, PaperlessBilling_Yes,
+        OnlineSecurity_Yes, Partner_Yes, TechSupport_Yes,
+        SeniorCitizen
+    ]).reshape(1, -1)
 
-    result_text = "⚠️ The customer is likely to CHURN." if prediction == 1 else "✅ The customer is likely to STAY."
-    st.markdown(f'<div class="predict-box">{result_text}</div>', unsafe_allow_html=True)
+    prediction = model.predict(input_data)[0]
+
+    if prediction == 1:
+        st.error("❌ The customer is likely to CHURN.")
+    else:
+        st.success("✅ The customer is likely to STAY.")
