@@ -1,44 +1,27 @@
 import pandas as pd
 
-# Load the raw dataset
+# Load original dataset
 df = pd.read_csv("data/Telco-Customer-Churn.csv")
-
-df = df[df["InternetService"] != "No"]
 
 # Drop customerID
 df.drop("customerID", axis=1, inplace=True)
 
-# Convert Churn column to binary
-df["Churn"] = df["Churn"].map({"Yes": 1, "No": 0})
+# Remove rows with blank TotalCharges
+df = df[df["TotalCharges"].str.strip() != ""]
 
-# Convert TotalCharges to numeric
-df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
+# Convert TotalCharges to float
+df["TotalCharges"] = df["TotalCharges"].astype(float)
 
-# Drop rows with missing TotalCharges (converted from blanks)
-df.dropna(inplace=True)
-
-# One-hot encode categorical columns
-categorical_cols = df.select_dtypes(include="object").columns.tolist()
-df = pd.get_dummies(df, columns=categorical_cols, drop_first=True)
-
-final_features = [
-    'TotalCharges', 'tenure', 'MonthlyCharges',
-    'InternetService_Fiber optic',
-    'PaymentMethod_Electronic check',
-    'Contract_Two year',
-    'gender',
-    'OnlineSecurity_Yes',
-    'PaperlessBilling_Yes',
-    'Partner_Yes',
-    'TechSupport_Yes',
-    'SeniorCitizen',
-    'Churn'
+# ✅ Final 12 selected readable features
+selected_features = [
+    'TotalCharges', 'MonthlyCharges', 'tenure',
+    'InternetService', 'PaymentMethod', 'Contract',
+    'gender', 'PaperlessBilling', 'OnlineSecurity',
+    'Partner', 'TechSupport', 'SeniorCitizen', 'Churn'
 ]
 
-df = df[final_features]
+# Keep only those columns
+df = df[selected_features]
 
-
-# Save the cleaned dataset
-df.to_csv("data/clean_telco.csv", index=False)
-
-print("✅ Data cleaned and saved as 'clean_telco.csv'")
+# Save clean readable version
+df.to_csv("data/clean_telco_readable.csv", index=False)
