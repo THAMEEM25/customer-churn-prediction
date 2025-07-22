@@ -25,7 +25,7 @@ y = df['Churn']
 label_encoders = {}
 for col in X.select_dtypes(include='object').columns:
     le = LabelEncoder()
-    X.loc[:, col] = le.fit_transform(X[col])
+    X[col] = le.fit_transform(X[col])
     label_encoders[col] = le
 
 # Encode target

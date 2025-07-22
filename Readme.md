@@ -14,9 +14,28 @@ This project is a machine learning-based system that predicts whether a telecom 
 > 📸 Local App Preview  
 > (No online deployment — built for internship portfolio)
 
-![App Screenshot](dashboard/demo_screenshot.png)
+![App Screenshot](dashboard/output.png)
+---
 ---
 
+## 📊 Power BI Dashboard
+
+The project also includes a fully interactive Power BI dashboard to visually explore churn patterns and insights.
+
+📁 File: `dashboard/Customer_Churn_Dashboard.pbix`  
+🖼️ Preview:
+
+![Power BI Dashboard](dashboard/powerbi_dashboard.png)
+
+---
+
+Key visualizations include:
+- 🔹 Churn Rate by Contract Type
+- 🔹 Monthly Charges vs. Tenure
+- 🔹 Churn vs. Payment Method
+- 🔹 Customer Segmentation by Internet Service
+
+---
 ## 🚀 Features
 
 - 🔍 Predicts customer churn using ML models (Random Forest, Logistic Regression, etc.)
@@ -29,7 +48,62 @@ This project is a machine learning-based system that predicts whether a telecom 
 
 ## 📁 Project Structure
 
-<pre><code>## 📁 Project Structure ``` Customer Churn Analysis/ ├── data/ ├── models/ ├── scripts/ ├── dashboard/ ├── notebooks/ ├── README.md ├── requirements.txt └── .gitignore ``` </code></pre>
+Customer-Churn-Prediction/
+│
+├── models/ ← Final model (Random Forest with pipeline)
+│ └── final_pipeline.pkl
+│
+├── notebooks/ ← Cleaned Jupyter notebook for EDA & modeling
+│ └── Telco_EDA.ipynb
+│
+├── Data/ ← Raw and readable datasets
+│ ├── Telco-Customer-Churn.csv
+│ └── clean_telco_readable.csv
+│
+├── scripts/ ← Python scripts for data prep, training, and prediction
+│ ├── clean_telco_data.py
+│ ├── train_model.py
+│ └── predict_churn.py
+│
+├── images/ ← EDA visualizations for README
+│ ├── churn_distribution.png
+│ └── churn_distribution_pie.png
+│
+├── app.py ← Streamlit app for real-time churn prediction
+├── requirements.txt ← Python dependencies
+└── README.md ← Project overview
+
+---
+
+## 🔍 Exploratory Data Analysis (EDA)
+
+### 📌 Churn Distribution (Pie Chart)
+
+![Churn Pie](notebooks/churn_distribution_pie.png)
+
+---
+
+### 📊 Churn Distribution by Class
+
+![Churn Distribution](notebooks/churn_distribution.png)
+
+---
+
+### 🧪 Features Used in Modeling
+
+We selected 12 important features based on domain knowledge and feature importance:
+- `Contract`
+- `tenure`
+- `MonthlyCharges`
+- `TotalCharges`
+- `InternetService`
+- `PaymentMethod`
+- `OnlineSecurity`
+- `TechSupport`
+- `PaperlessBilling`
+- `Partner`
+- `gender`
+- `SeniorCitizen`
 
 ---
 
@@ -57,7 +131,17 @@ Install all dependencies using:
 pip install -r requirements.txt
 
 ---
----
+
+ Key Highlights
+📊 Clean EDA with interactive visualizations
+
+🧠 Accurate churn prediction using Random Forest
+
+⚖️ SMOTE used to improve recall in class imbalance
+
+💡 Deploy-ready app and organized code/scripts
+
+📈 Power BI Dashboard 
 
 ## 📁 Notes
 
@@ -67,8 +151,13 @@ pip install -r requirements.txt
   - Unwanted system files
   - Model files (optional)
 
+  Acknowledgements
+Dataset: Kaggle Telco Customer Churn Dataset
 
-## 🙋‍♂️ Author
+
+## Project Devoloper
 
 **Mohamed Thameem Ansar**  
-*Data Analyst*
+**Data Analyst**
+
+-- Thank You

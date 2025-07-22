@@ -1,88 +1,102 @@
 import streamlit as st
+import pandas as pd
 import pickle
-import numpy as np
 
-# Load trained model
-with open("models/churn_model.pkl", "rb") as f:
-    model = pickle.load(f)
-
-# Set page config
+# Page config
 st.set_page_config(page_title="Customer Churn Predictor", layout="centered")
 
-# CSS for dark techy background and glowing title
+# Load pipeline
+with open("models/final_pipeline.pkl", "rb") as f:
+    pipeline = pickle.load(f)
+
+# CSS for minimal radio styling (optional)
 st.markdown("""
-    <style>
-    body {
-        background-color: #0f1117;
-        color: white;
-    }
-    .title-box {
-        background-color: #222;
-        padding: 20px;
-        border-radius: 15px;
-        text-align: center;
-        box-shadow: 0 0 20px #00f0ff;
-        margin-bottom: 30px;
-    }
-    .title-box h1 {
-        color: #00f0ff;
-        font-size: 40px;
-        font-family: monospace;
-        margin: 0;
-    }
-    </style>
+<style>
+label[data-testid="stRadio"] > div[role="radiogroup"] > label {
+    background-color: #121212;
+    color: #ffffff;
+    border: 1px solid #444;
+    border-radius: 12px;
+    padding: 8px 16px;
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+label[data-testid="stRadio"] > div[role="radiogroup"] > label:hover {
+    background-color: #1f1f1f;
+    border-color: #6c63ff;
+}
+label[data-testid="stRadio"] > div[role="radiogroup"] > label[data-selected="true"] {
+    background-color: #6c63ff;
+    color: white;
+    border-color: #6c63ff;
+}
+</style>
 """, unsafe_allow_html=True)
 
-# Glowing title
-st.markdown('<div class="title-box"><h1>Customer Churn Prediction</h1></div>', unsafe_allow_html=True)
+# Title
+st.title("📊 Customer Churn Predictor")
+st.write("Provide customer details below to predict churn.")
 
-# Input form
-st.subheader("📋 Enter Customer Details")
+# Layout: 3 main columns
+col1, col2, col3 = st.columns(3)
 
-TotalCharges = st.slider("Total Charges (₹)", min_value=0.0, max_value=10000.0, value=500.0)
-MonthlyCharges = st.slider("Monthly Charges (₹)", min_value=0.0, max_value=200.0, value=70.0)
-tenure = st.slider("Tenure (months)", min_value=0, max_value=72, value=12)
+# Personal Info
+with col1:
+    st.subheader(" Personal Info")
+    gender = st.selectbox("Gender", ["Male", "Female"])
+    senior = st.selectbox("Senior Citizen", ["Yes", "No"])
+    partner = st.selectbox("Partner", ["Yes", "No"])
 
-InternetService = st.selectbox("Internet Service Type", ["Fiber optic", "Other"])
-InternetService_Fiber_optic = 1 if InternetService == "Fiber optic" else 0
+# Services
+with col2:
+    st.subheader(" Services")
+    internet = st.selectbox("Internet Service", ["DSL", "Fiber optic", "No"])
+    online_security = st.selectbox("Online Security", ["Yes", "No"])
+    tech_support = st.selectbox("Tech Support", ["Yes", "No"])
 
-PaymentMethod = st.selectbox("Payment Method", ["Electronic check", "Other"])
-PaymentMethod_Electronic_check = 1 if PaymentMethod == "Electronic check" else 0
+# Billing Info
+with col3:
+    st.subheader(" Billing Info")
+    payment = st.selectbox("Payment Method", [
+        "Electronic check", "Mailed check",
+        "Bank transfer (automatic)", "Credit card (automatic)"
+    ])
+    paperless = st.selectbox("Paperless Billing", ["Yes", "No"])
+    contract = st.selectbox("Contract", ["Month-to-month", "One year", "Two year"])
 
-Contract = st.selectbox("Contract Type", ["Two year", "Other"])
-Contract_Two_year = 1 if Contract == "Two year" else 0
+# Charges + Tenure: 2-column layout for better alignment
+col4, col5 = st.columns(2)
+with col4:
+    monthly_charges = st.slider("Monthly Charges", min_value=18.0, max_value=120.0, value=70.0)
+with col5:
+    total_charges = st.slider("Total Charges", min_value=0.0, max_value=9000.0, value=1000.0)
 
-gender = st.selectbox("Gender", ["Male", "Female"])
-gender_Male = 1 if gender == "Male" else 0
+tenure = st.slider("Tenure (in months)", 0, 72, 12)
 
-PaperlessBilling = st.selectbox("Paperless Billing", ["Yes", "No"])
-PaperlessBilling_Yes = 1 if PaperlessBilling == "Yes" else 0
-
-OnlineSecurity = st.selectbox("Online Security", ["Yes", "No"])
-OnlineSecurity_Yes = 1 if OnlineSecurity == "Yes" else 0
-
-Partner = st.selectbox("Has Partner?", ["Yes", "No"])
-Partner_Yes = 1 if Partner == "Yes" else 0
-
-TechSupport = st.selectbox("Tech Support", ["Yes", "No"])
-TechSupport_Yes = 1 if TechSupport == "Yes" else 0
-
-SeniorCitizen = st.selectbox("Senior Citizen?", ["Yes", "No"])
-SeniorCitizen = 1 if SeniorCitizen == "Yes" else 0
-
-# Predict button
+# Predict Button
 if st.button("Predict Churn"):
-    input_data = np.array([
-        TotalCharges, MonthlyCharges, tenure,
-        InternetService_Fiber_optic, PaymentMethod_Electronic_check,
-        Contract_Two_year, gender_Male, PaperlessBilling_Yes,
-        OnlineSecurity_Yes, Partner_Yes, TechSupport_Yes,
-        SeniorCitizen
-    ]).reshape(1, -1)
 
-    prediction = model.predict(input_data)[0]
+    # Create input
+    input_df = pd.DataFrame([{
+        'TotalCharges': total_charges,
+        'MonthlyCharges': monthly_charges,
+        'tenure': tenure,
+        'InternetService': internet,
+        'PaymentMethod': payment,
+        'Contract': contract,
+        'gender': gender,
+        'PaperlessBilling': paperless,
+        'OnlineSecurity': online_security,
+        'Partner': partner,
+        'TechSupport': tech_support,
+        'SeniorCitizen': 1 if senior == "Yes" else 0
+    }])
 
+    # Predict using full pipeline
+    prediction = pipeline.predict(input_df)[0]
+
+    # Show result
     if prediction == 1:
-        st.error("❌ The customer is likely to CHURN.")
+        st.error(" Customer is **likely to churn**.")
     else:
-        st.success("✅ The customer is likely to STAY.")
+        st.success(" Customer is **likely to stay**.")
