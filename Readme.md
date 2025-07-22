@@ -94,7 +94,7 @@ Customer-Churn-Prediction/
 
 ### Churn by Gender
 
-![Churn by gender](notebook/images/churn_by_gender.png)
+![Churn by gender](notebooks/images/churn_by_gender.png)
 
 ### Churn by Online Security
 
