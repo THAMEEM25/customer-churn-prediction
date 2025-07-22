@@ -82,10 +82,43 @@ Customer-Churn-Prediction/
 ![Churn Pie](notebooks/churn_distribution_pie.png)
 
 ---
+## 📊 Churn by Features
 
-### 📊 Churn Distribution by Class
+### Churn by Contract
 
-![Churn Distribution](notebooks/churn_distribution.png)
+![Churn by Contract](images/churn_by_Contract.png)
+
+### Churn by Internet Service
+
+![Churn by InternetService](images/churn_by_InternetService.png)
+
+### Churn by Gender
+
+![Churn by gender](images/churn_by_gender.png)
+
+### Churn by Online Security
+
+![Churn by OnlineSecurity](images/churn_by_OnlineSecurity.png)
+
+### Churn by Paperless Billing
+
+![Churn by PaperlessBilling](images/churn_by_PaperlessBilling.png)
+
+### Churn by Partner
+
+![Churn by Partner](images/churn_by_Partner.png)
+
+### Churn by Payment Method
+
+![Churn by PaymentMethod](images/churn_by_PaymentMethod.png)
+
+###  Churn by Senior Citizen
+
+![Churn by SeniorCitizen](images/churn_by_SeniorCitizen.png)
+
+### Churn by Tech Support
+
+![Churn by TechSupport](images/churn_by_TechSupport.png)
 
 ---
 
