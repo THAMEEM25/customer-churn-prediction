@@ -133,15 +133,16 @@ pip install -r requirements.txt
 ---
 
  Key Highlights
-📊 Clean EDA with interactive visualizations
+ 
+  Clean EDA with interactive visualizations
 
-🧠 Accurate churn prediction using Random Forest
+  Accurate churn prediction using Random Forest
 
-⚖️ SMOTE used to improve recall in class imbalance
+  SMOTE used to improve recall in class imbalance
 
-💡 Deploy-ready app and organized code/scripts
+  Deploy-ready app and organized code/scripts
 
-📈 Power BI Dashboard 
+  Power BI Dashboard 
 
 ## 📁 Notes
 
