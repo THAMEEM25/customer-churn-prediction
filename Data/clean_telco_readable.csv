@@ -1,4 +1,4 @@
-TotalCharges, MonthlyCharges,tenure,InternetService,PaymentMethod,Contract,gender,PaperlessBilling,OnlineSecurity,Partner,TechSupport,SeniorCitizen,Churn
+TotalCharges,MonthlyCharges,tenure,InternetService,PaymentMethod,Contract,gender,PaperlessBilling,OnlineSecurity,Partner,TechSupport,SeniorCitizen,Churn
 29.85,29.85,1,DSL,Electronic check,Month-to-month,Female,Yes,No,Yes,No,0,No
 1889.5,56.95,34,DSL,Mailed check,One year,Male,No,Yes,No,No,0,No
 108.15,53.85,2,DSL,Mailed check,Month-to-month,Male,Yes,Yes,No,No,0,Yes
